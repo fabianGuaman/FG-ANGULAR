@@ -1,19 +1,24 @@
 /*
-
-    DIRECTIVE ALERTA
-    ----------------
-    <script src="DirectiveAlerta.js" type="text/javascript"></script>
  
-    var app = angular.module('todoApp', ['FgAlerta']);
-    app.controller('TodoListController', function ($scope, DtoAlerta) {
-    
-        $scope.objAlerta = DtoAlerta.objAlerta;
-        $scope.objAlerta.setObjAlerta('clase-ul', 'clase-li', 'clase-efect-in', 'clase-efect-out);
+ DIRECTIVE ALERTA
+ ----------------
 
-        $scope.addMensaje = function (mensaje) {
-            $scope.objAlerta.addAlerta(mensaje);
-        };
-    );
+<script src="DirectiveAlerta.js" type="text/javascript"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css"/>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+ 
+ var app = angular.module('todoApp', ['FgAlerta']);
+ app.controller('TodoListController', function ($scope, DtoAlerta) {
+ 
+    $scope.objAlerta = DtoAlerta.objAlerta;
+    $scope.objAlerta.setObjAlerta('clase-ul', 'clase-li', 'clase-efect-in', 'clase-efect-out);
+ 
+    $scope.addMensaje = function (mensaje, icono) {
+        $scope.objAlerta.addAlerta(mensaje, icono);
+    };
+ );
  
  */
 var appAlerta = angular.module('FgAlerta', []);
@@ -23,7 +28,7 @@ appAlerta.directive('fgAlerta', function () {
         template: '' +
                 '<ul class="{{objAlerta.claseUl}}">' +
                 '<li ng-repeat="obj in objAlerta.listAlerta track by $index" ng-show="obj.ocultar" class="{{objAlerta.claseLi}} animated {{objAlerta.claseIn}} {{obj.claseOut}}">' +
-                '{{obj.mensaje}}' +
+                '<i class="{{obj.icono}}"></i>{{obj.mensaje}}' +
                 '</li>' +
                 '</ul>'
     };
@@ -41,8 +46,8 @@ appAlerta.factory('DtoAlerta', function ($timeout) {
                 this.claseIn = claseIn;
                 this.claseOut = claseOut;
             },
-            addAlerta: function (mensaje) {
-                var obj = {id: generateId(), mensaje: mensaje, ocultar: true};
+            addAlerta: function (mensaje, icono) {
+                var obj = {id: generateId(), mensaje: mensaje, icono: icono, ocultar: true};
                 this.listAlerta.push(obj);
                 var aux = this.listAlerta;
                 var out = this.claseOut;
